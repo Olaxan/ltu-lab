@@ -37,7 +37,6 @@ def solve(f, x0, h):
 	while True:
 		xNext = xPrev - (f(xPrev) / derivative(f, xPrev, h))
 		#Calculate intersection using Newton-Raphson's method
-		#Don't ask me to explain it, I just programmed the dang thing
 		
 		if (abs(xPrev - xNext) <= h): #Return if calculation reaches convergence
 			return xNext
