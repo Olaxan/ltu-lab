@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>73236d84-0eb1-4742-b41e-85c6bc457a4f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Lab2.py</StartupFile>
+    <StartupFile>Menu.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
