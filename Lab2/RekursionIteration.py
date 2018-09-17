@@ -1,6 +1,6 @@
 import math
 
-def bounce(n):
+def bounce(n: int):
 	"""Prints numbers n-0-n using recursion"""
 	print(n)
 	if n > 0:
