@@ -27,7 +27,7 @@
     <Compile Include="recursion.py" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utils\Utilities.pyproj">
+    <ProjectReference Include="..\Utilities\Utilities.pyproj">
       <Name>Utilities</Name>
       <Project>{2fd752f5-0c6e-496e-8025-be5a96672790}</Project>
       <Private>True</Private>
