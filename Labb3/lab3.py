@@ -13,9 +13,16 @@ menuItems = [
 	"Load"
 	]
 
-words = {}
+print("Welcome to Word-Pal 2000!")
 
-print("Welcome to Word-Pal 2000!\n")
+if (os.path.isfile(PATH)):
+	with open(PATH, "r") as rf:
+		print("Loaded words from '{}'!".format(PATH))
+		words = json.load(rf)
+else:
+	words = {}
+
+print()
 
 while True:
 	select = utils.showMenu(menuItems)
