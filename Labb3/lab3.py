@@ -15,8 +15,9 @@ menuItems = [
 
 words = {}
 
+print("Welcome to Word-Pal 2000!")
+
 while True:
-	os.system("cls")
 	select = utils.showMenu(menuItems)
 
 	if select == 0:
@@ -57,6 +58,7 @@ while True:
 			print("Couldn't load words - file not found.")
 
 	input("\nPress enter to continue...")
+	os.system("cls")
 
 
 
