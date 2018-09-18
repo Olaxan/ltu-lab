@@ -1,9 +1,9 @@
-import Amortering
-import Sockerkaka
+import mortgage
+import cake
 
 print("SOCKERKAKA:")
-Sockerkaka.sockerkaka(4)
-Sockerkaka.sockerkaka(7)
+cake.sockerkaka(4)
+cake.sockerkaka(7)
 
 print("AMORTERING:")
-Amortering.kostnad(50000, 0.03, 10)
+mortgage.kostnad(50000, 0.03, 10)
