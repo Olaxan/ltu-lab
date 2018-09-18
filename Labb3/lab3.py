@@ -15,7 +15,7 @@ menuItems = [
 
 words = {}
 
-print("Welcome to Word-Pal 2000!")
+print("Welcome to Word-Pal 2000!\n")
 
 while True:
 	select = utils.showMenu(menuItems)
