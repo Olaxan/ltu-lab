@@ -20,8 +20,23 @@ def requestInt(prompt = "> ", error = "\nPlease enter an integer.", lower = floa
 		user = input(prompt)
 		valid, out = tryParse(user)
 		if valid and lower <= out <= upper:
-			if (user == exitChar):
+			if user == exitChar:
 				return None
 			return out
+		else:
+			print(error)
+
+def ask(text, prompt = "> ", error = "\nPlease answer y/n.", exitChar = None):
+	print(text, "(y/n)")
+	if (exitChar != None):
+		print("Enter", exitChar, "to exit.")
+	while True:
+		user = input(prompt).lower()
+		if user == exitChar:
+			return None
+		elif user in ("y", "yes", "yas", "yep", "ja", "yay"):
+			return True
+		elif user in ("n", "no", "nope", "nej", "nay"):
+			return False
 		else:
 			print(error)

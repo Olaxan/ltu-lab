@@ -28,6 +28,9 @@ while True:
 	select = utils.showMenu(menuItems)
 
 	if select == 0:
+		if utils.ask("Save changes?"):
+			with open(PATH, "w") as wf:
+				json.dump(words, wf)
 		break
 	elif select == 1:
 		key = input("Enter word: ")
