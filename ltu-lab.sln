@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "lab2", "Lab2\lab2.pyproj", "{73236D84-0EB1-4742-B41E-85C6BC457A4F}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Labb2", "Lab2\Labb2.pyproj", "{73236D84-0EB1-4742-B41E-85C6BC457A4F}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "lab1", "Lab1\lab1.pyproj", "{CE8DCEDA-B90B-4F0C-8B82-E26F2296C146}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Labb1", "Lab1\Labb1.pyproj", "{CE8DCEDA-B90B-4F0C-8B82-E26F2296C146}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "lab3", "Lab3\lab3.pyproj", "{686EE9A8-513D-41B9-8A5C-454C1AD12325}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Labb3", "Lab3\Labb3.pyproj", "{686EE9A8-513D-41B9-8A5C-454C1AD12325}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "utils", "Utils\utils.pyproj", "{2FD752F5-0C6E-496E-8025-BE5A96672790}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Utilities", "Utils\Utilities.pyproj", "{2FD752F5-0C6E-496E-8025-BE5A96672790}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,16 +2,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>2fd752f5-0c6e-496e-8025-be5a96672790</ProjectGuid>
+    <ProjectGuid>686ee9a8-513d-41b9-8a5c-454c1ad12325</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>utils.py</StartupFile>
+    <StartupFile>lab3.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>utils</Name>
-    <RootNamespace>Utils</RootNamespace>
+    <Name>Labb3</Name>
+    <RootNamespace>Lab3</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +22,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="utils.py" />
+    <Compile Include="lab3.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\utils.pyproj">
+      <Name>utils</Name>
+      <Project>{2fd752f5-0c6e-496e-8025-be5a96672790}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
