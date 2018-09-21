@@ -1,3 +1,9 @@
+def sign(n):
+	if n == 0:
+		return 0
+	else:
+		return n - abs(n)
+
 def tryParse(n, base=10):
 	try:
 		test = int(n, base)
@@ -40,3 +46,12 @@ def ask(text, prompt = "> ", error = "\nPlease answer y/n.", exitChar = None):
 			return False
 		else:
 			print(error)
+
+def query(sep = " ", prompt = "> ", error = "\n???", exitChar = None):
+	if (exitChar != None):
+		print("Enter", exitChar, "to exit.")
+	while True:
+		user = input(prompt)
+		if user == exitChar:
+			return None
+		return user.split(sep)
