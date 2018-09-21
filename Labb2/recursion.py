@@ -1,20 +1,20 @@
 import math
-import utils #OBS: Glöm inte att inkludera vid inlämning.
+import utils
+#Glöm inte att inkludera vid inlämning!
 
 def bounce(n: int):
 	"""Prints numbers n-0-n using recursion"""
-	#print(sign(n))
-	#print(n)
-	#if n != 0:
-	#	bounce(n + utils.sign(n))
-	#	print(n)
+	print(n)
+	if n != 0:
+		bounce(n - utils.sign(n))
+		print(n)
 
-def bounce2(n):
+def bounce2(n: int):
 	"""Prints numbers n-0-n using iteration"""
-	for x in range(-n, n + 1):
-	    print(abs(x))
+	for x in range(utils.neg(n), abs(n) + 1):
+	    print(utils.sign(n) * abs(x))
 
-def tvarsumman(n):
+def tvarsumman(n: int):
 	"""Prints sum of digits in number n using recursion"""
 	n = abs(n)
 	x = n % 10
@@ -22,7 +22,7 @@ def tvarsumman(n):
 		x += tvarsumman(n // 10)
 	return x
 
-def tvarsumman2(n):
+def tvarsumman2(n: int):
 	"""Prints sum of digits in number n using iteration"""
 	x = 0
 	while n > 0:

@@ -1,8 +1,11 @@
 def sign(n):
 	if n == 0:
-		return 0
+		return int(0)
 	else:
-		return n - abs(n)
+		return int(n / abs(n))
+
+def neg(n):
+	return -abs(n)
 
 def tryParse(n, base=10):
 	try:
