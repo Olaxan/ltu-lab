@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="command.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Labb4.py" />
     <Compile Include="telepost.py">
       <SubType>Code</SubType>
