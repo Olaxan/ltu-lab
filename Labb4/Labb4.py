@@ -4,7 +4,7 @@ import os
 print("TelePOST Catalogue System v0.01 ALPHA")
 
 com_data = {
-	'add': ("number", "alias"),
+	'add': ("number", "alias", "test"),
 	'lookup': ("name", "number"),
 	'exit': "hello"
 	}
@@ -19,14 +19,15 @@ while True:
 				#print("command '{}' accepted (index {})".format(sub_com, ind))
 				if len(com) - 1 > ind and com[ind + 1] not in com_data[com[0]]:		#if a valid subcommand is found, check if it's followed by a value (not a subcommand)
 					print(com[ind].upper())
-					for x in range(ind + 1, len(com)):
-						if com[x] in com_data[com[0]]:
-							break
+					for x in range(ind + 1, len(com)):		#loop through next values, until the end of the command string...
+						if com[x] in com_data[com[0]]:		#or until a valid subcommand is found...
+							del com[ind:x]					#in which case, delete these subcommands (leaving only the main command string)...
+							break							#then break TODO: make natural end-of-loop also delete commands
 						print (com[x])
 					#print("{0}: {1}".format(sub_com, com[ind + 1]))
-					del com[ind:ind + 2]
+					#del com[ind:len(com)]
 				else:
-					print("SYNTAX: {} {}".format(com[0], com_data[com[0]]))
+					print("SYNTAX: '{0}' {1}".format(com[0], com_data[com[0]]))
 		print(com)
 
 
