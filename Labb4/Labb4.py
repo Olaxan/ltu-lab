@@ -4,8 +4,8 @@ import os
 print("TelePOST Catalogue System v0.01 ALPHA")
 
 com_data = {
-	'add': ("number", "alias", "test"),
-	'lookup': ("name", "number"),
+	'add': ["number", "alias", "test"],
+	'lookup': ["name", "number"],
 	'exit': "hello"
 	}
 
@@ -14,16 +14,17 @@ while True:
 
 	valid = []
 	if com[0] in com_data and len(com) > 1:
+
+		com.append(None) #Until I can figure out a better program flow, None serves as a null terminator for the command parser.
 		curr = []
-		for sub_com in com:
-			if sub_com in com_data or sub_com in com_data[com[0]]:
+
+		for sub in com:
+			if sub in list(com_data) + com_data[com[0]] + [None]:
 				if len(curr) > 0:
 					valid.append(curr.copy())
 					curr.clear()
-			curr.append(sub_com)
-		valid.append(curr.copy())
-		curr.clear()
-
+			curr.append(sub)
+		
 		print(valid)
 
 
