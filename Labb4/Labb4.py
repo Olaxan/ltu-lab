@@ -1,16 +1,15 @@
 import utils
 import os
-import command
-
-test = command.Add()
-
-print("TelePOST Catalogue System v0.01 ALPHA")
+import com_data
+from command import *
 
 com_data = {
 	'add': ["number", "alias", "test"],
 	'lookup': ["name", "number"],
 	'exit': "hello"
 	}
+
+print("TelePOST Catalogue System v0.01 ALPHA")
 
 while True:
 	com = utils.query() #add, Firstname, Lastname, num, 86332, alias, CoolGuy96, Fucko99

@@ -24,8 +24,11 @@
     <Compile Include="command.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="com_data.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Labb4.py" />
-    <Compile Include="telepost.py">
+    <Compile Include="user.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
