@@ -1,8 +1,9 @@
 import utils
 import os
-import json
+import lab3_func
 
 PATH = "words.json"
+MODE = 1
 
 menuItems = [
 	"Add item",
@@ -15,12 +16,9 @@ menuItems = [
 
 print("Welcome to Word-Pal 2000!")
 
-if (os.path.isfile(PATH)):
-	with open(PATH, "r") as rf:
-		print("Loaded words from '{}'!".format(PATH))
-		words = json.load(rf)
-else:
-	words = {}
+wordList = lab3_func.wordList(MODE)
+if wordList.loadWords(PATH):
+	print("Loaded from '{0}' (mode {1})!".format(PATH, wordList.mode))
 
 print()
 
@@ -28,42 +26,53 @@ while True:
 	select = utils.showMenu(menuItems)
 
 	if select == 0:
+		#Exit program
 		if utils.ask("Save changes?"):
-			with open(PATH, "w") as wf:
-				json.dump(words, wf)
+			wordList.saveWords(PATH)
 		break
+
 	elif select == 1:
+		#Add new word
 		key = input("Enter word: ")
 		val = input("Enter definition: ")
-		words[key.lower()] = val
-		print("Added '{}'!".format(key))
+		if wordList.setWord(key, val):
+			print("Added '{0}'!".format(key))
+		else:
+			print("Word '{0}' already exists!".format(key))
+
 	elif select == 2:
+		#Lookup a word
 		key = input("Enter word: ")
-		val = words.get(key.lower())
+		val = wordList.getWord(key)
 		if val == None:	
 			print("Word '{}' not found.".format(key))
 		else:
 			print("{}: {}".format(key.upper(), val))
+
 	elif select == 3:
+		#Remove a word
 		key = input("Enter word: ")
-		val = words.get(key)
-		if val == None:
-			print("Word '{}' not found.".format(key))
-		else:
-			del words[key]
+		success = wordList.removeWord(key)
+		if success:
 			print("Removed '{}'!".format(key))
+		else:
+			print("Word '{}' not found.".format(key))
+			
 	elif select == 4:
-		for key, val in words.items():
-		    print("{}: {}".format(key.upper(), val))
+		#List all words
+		wordList.printWords()
+
 	elif select == 5:
-		with open(PATH, "w") as wf:
-			json.dump(words, wf)
+		#Save words to file
+		if wordList.saveWords(PATH):
 			print("Saved to '{}'!".format(PATH))
+		else:
+			print("Could not save words - unknown error.")
+
 	elif (select == 6):
-		if (os.path.isfile(PATH)):
-			with open(PATH, "r") as rf:
-				print("Loaded from '{}'!".format(PATH))
-				words = json.load(rf)
+		#Load words from file
+		if wordList.loadWords(PATH):
+			print("Loaded from '{}'!".format(PATH))
 		else:
 			print("Couldn't load words - file not found.")
 
