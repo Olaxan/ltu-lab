@@ -1,19 +1,18 @@
 from command import *
 import user
 
-def addUser(userList, *args):
+def addUser(userList, name, number, alias):
 	new = user(args)
 	userList.append(new)
 
 def lookupUser():
 	pass
 
-com_data = [
+commmands = [
 	Command("add", str, addUser, 
 		 Command("number", str),
 		 Command("alias", str)
 	),
 	Command("lookup", str, lookupUser,
 		 Command("number", str)
-	)
-	]
+	)]
