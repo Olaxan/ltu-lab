@@ -21,10 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="command.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="com_data.py">
+    <Compile Include="comparse.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Labb4.py" />

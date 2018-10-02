@@ -1,17 +1,17 @@
 import utils
 import os
-import com_data
-from command import *
-
-#com_data = {
-#	'add': ["number", "alias", "test"],
-#	'lookup': ["name", "number"],
-#	'exit': "hello"
-#	}
+import comparse
+import argparse
 
 print("TelePOST Catalogue System v0.01 ALPHA")
 
-Command.evaluate(com_data.commmands, utils.query()) #add, Firstname, Lastname, num, 86332, alias, CoolGuy96, Fucko99
+parser = comparse.CommandParser()
+parser.add_command("add", "+", "Adds a user to the phonebook.")
+parser.add_command("lookup", "?", "Displays information about a post in the phonebook")
+
+while True:
+
+	parser.evaluate(utils.query(prompt = ">"))
 
 #add Tord Fredrik Gustav Lind (num 0733573176 alias Toady)
 #0	 1    2       3      4     5   6          7     8
