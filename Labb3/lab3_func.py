@@ -143,10 +143,3 @@ class wordList:
 				del self.words[1][i]
 				return True
 		return False
-
-#if (os.path.isfile(PATH)):
-#	with open(PATH, "r") as rf:
-#		print("Loaded words from '{}'!".format(PATH))
-#		words = json.load(rf)
-#else:
-#	words = {}
