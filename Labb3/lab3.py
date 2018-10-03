@@ -3,7 +3,7 @@ import os
 import lab3_func
 
 PATH = "words.json"
-MODE = 1
+MODE = 0
 
 menuItems = [
 	"Add item",
