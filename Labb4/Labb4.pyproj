@@ -25,6 +25,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Labb4.py" />
+    <Compile Include="phonebook.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="user.py">
       <SubType>Code</SubType>
     </Compile>
