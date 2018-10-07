@@ -17,8 +17,9 @@ fl.addNumber("070-2867892")
 gl = book.addUser("Göran Lind", "072-2867862", "Görbatjev")
 gl.addAlias("Gås")
 
-print(book.printBook())
-
+print(book.printAll())
+book.save("data.txt")
+book.load("data.txt")
 #add Tord Fredrik Gustav Lind (num 0733573176 alias Toady)
 #0	 1    2       3      4     5   6          7     8
 #!   -    -       -      -     !   -          !     -

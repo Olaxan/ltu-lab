@@ -1,45 +1,33 @@
+import utils
+
 class User:
 
-	def __init__(self, name : str, number : str = None, alias : str = None, *args, **kwargs):
-		self.firstName = ""
-		self.middleName = ""
-		self.lastName = ""
-		self.name = name
-		self.numbers = list()
-		self.aliases = list()
+	def __init__(self, name : str, number = None, alias = None, *args, **kwargs):
+		self.names = list(filter(None, (name, alias)))
+		self.numbers = list(filter(None, [number]))
 
-		if number:
-			self.numbers.append(number)
-		if alias:
-			self.aliases.append(alias)
 		return super().__init__(*args, **kwargs)
 
 	@property
-	def name(self):
-		return self._name
+	def firstName(self):
+		return self.names[0].split()[0]
 
-	@name.setter
-	def name(self, value):
-		self._name = value
-		n = value.split()
-		if len(n) > 1:
-			self.firstName = n[0]
-			self.lastName = n[-1]
-			if len(n) > 2:
-				self.middleName = " ".join(n[1:-1])
+	@property
+	def middleName(self):
+		return " ".join(self.names[0].split()[1:-1])
 
-	@name.deleter
-	def name(self):
-		del self._name
+	@property
+	def lastName(self):
+		return self.names[0].split()[-1]
 
 	def addNumber(self, number):
 		self.numbers.append(number)
 
 	def addAlias(self, alias):
-		self.aliases.append(alias)
+		self.names.append(alias)
 
 	def namesToString(self):
-		return ",".join(self.aliases + self.name.split())
+		return ",".join(self.names)
 
 	def numbersToString(self):
 		return ",".join(self.numbers)
