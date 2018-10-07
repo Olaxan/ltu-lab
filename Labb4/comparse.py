@@ -17,8 +17,7 @@ class CommandParser:
 
 	def evaluate(self, commands : list):
 		if self.command_exists(commands[0]):
-			
-
+			pass
 
 	class __Command:
 
