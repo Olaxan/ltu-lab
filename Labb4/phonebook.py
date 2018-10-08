@@ -53,7 +53,7 @@ class PhoneBook:
 		if (os.path.isfile(path)):
 			with open(path, "r") as rf:
 				for line in rf.readlines():
-					names = re.search("([\w\s]+)[/;]", line)
+					names = re.search("^(.*?);", line)
 					print(names[0])
 				return True
 		return False
