@@ -58,3 +58,7 @@ def query(sep = " ", prompt = "> ", error = "\n???", exitChar = None):
 		if user == exitChar:
 			return None
 		return user.split(sep)
+
+def toCleanList(obj):
+	if type(obj) is not list : obj = [obj]
+	return list(filter(None, obj))

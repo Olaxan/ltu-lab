@@ -12,14 +12,18 @@ print()
 
 book = pb.PhoneBook()
 
-fl = book.addUser("Tord Fredrik Gustav Lind", "073-3573176", "Smörgås")
+fl = book.addUser(["Tord Fredrik Gustav Lind", "Smörgås"], "073-3573176")
 fl.addNumber("070-2867892")
-gl = book.addUser("Göran Lind", "072-2867862", "Görbatjev")
+gl = book.addUser("Göran Lind", "072-2867862")
 gl.addAlias("Gås")
 
-print(book.printAll())
+print("BEFORE LOAD:")
+book.printAll()
 book.save("data.txt")
+book.clear()
 book.load("data.txt")
+print("AFTER LOAD:")
+book.printAll()
 #add Tord Fredrik Gustav Lind (num 0733573176 alias Toady)
 #0	 1    2       3      4     5   6          7     8
 #!   -    -       -      -     !   -          !     -

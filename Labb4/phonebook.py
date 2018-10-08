@@ -1,5 +1,6 @@
 import re
 import os
+import utils
 from user import *
 
 class PhoneBook:
@@ -8,12 +9,12 @@ class PhoneBook:
 		self.users = list()
 		return super().__init__(*args, **kwargs)
 
-	def addUser(self, name, number = None, alias = None):
+	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
 		test = self.findUsers(name, number)
 		if test[0]: return test[1]
 
-		new = User(name, number, alias)
+		new = User(name, number)
 		self.users.append(new)
 		return new
 
@@ -25,11 +26,16 @@ class PhoneBook:
 
 	def findUsers(self, name, number = None):
 		"""Finds users matching specified name (+ alias) and numbers."""
-		matches = [user for user in self.users if user.namesToString().lower().find(name.lower()) > -1]
-		if number != None:
-			matches = [user for user in matches if user.numbersToString().find(number) > -1]
+		name = utils.toCleanList(name)
+		number = utils.toCleanList(number)
+		matches = list()
 
-			return len(matches) > 0, matches
+		for i in name:
+			matches = [user for user in self.users if user.namesToString().lower().find(i.lower()) > -1]
+			for j in number:
+				matches = [user for user in matches if user.numbersToString().find(j) > -1]
+
+		return len(matches) > 0, matches
 
 	def printAll(self):
 		"""Prints the contents of the phonebook in a formatted manner."""
@@ -42,6 +48,9 @@ class PhoneBook:
 				print("\t# {0}".format(num))
 			print()
 
+	def clear(self):
+		self.users.clear()
+
 	def save(self, path):
 		with open(path, "w") as wf:
 			for user in self.users:
@@ -53,7 +62,8 @@ class PhoneBook:
 		if (os.path.isfile(path)):
 			with open(path, "r") as rf:
 				for line in rf.readlines():
-					names = re.search("^(.*?);", line)
-					print(names[0])
+					names = re.search("^(.*?);", line).group(1).split("/")
+					numbers = re.search(";(.+)$", line).group(1).split("/")
+					self.addUser(names, numbers)
 				return True
 		return False

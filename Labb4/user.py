@@ -2,9 +2,9 @@ import utils
 
 class User:
 
-	def __init__(self, name : str, number = None, alias = None, *args, **kwargs):
-		self.names = list(filter(None, (name, alias)))
-		self.numbers = list(filter(None, [number]))
+	def __init__(self, name, number = None, *args, **kwargs):
+		self.names = utils.toCleanList(name)
+		self.numbers = utils.toCleanList(number)
 
 		return super().__init__(*args, **kwargs)
 
