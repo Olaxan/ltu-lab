@@ -44,6 +44,14 @@ class PhoneBook:
 		else:
 			return None
 
+	def printUser(self, user):
+		print("#{0}: {1}, {2} {3}".format(user.id, user.lastName.upper(), user.firstName, user.middleName))
+		if len(user.names) > 1:
+			print("AKA:", ", ".join(user.names[1:]))
+		for num in user.numbers:
+			print("   - {0}".format(num))
+		print()
+
 	def printAll(self):
 		"""Prints the contents of the phonebook in a formatted manner."""
 		print(len(self.users), "user(s):")
