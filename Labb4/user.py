@@ -2,7 +2,8 @@ import utils
 
 class User:
 
-	def __init__(self, name, number = None, *args, **kwargs):
+	def __init__(self, id, name, number = None, *args, **kwargs):
+		self.id = id
 		self.names = utils.toCleanList(name)
 		self.numbers = utils.toCleanList(number)
 
@@ -20,16 +21,18 @@ class User:
 	def lastName(self):
 		return self.names[0].split()[-1]
 
-	def addNumber(self, number):
-		self.numbers.append(number)
+	def addNumber(self, *args):
+		for arg in args:
+			self.numbers.append(arg)
 
-	def addAlias(self, alias):
-		self.names.append(alias)
+	def addAlias(self, *args):
+		for arg in args:
+			self.names.append(arg)
 
 	def namesToString(self):
-		return ",".join(self.names)
+		return ", ".join(self.names)
 
 	def numbersToString(self):
-		return ",".join(self.numbers)
+		return ", ".join(self.numbers)
 
 

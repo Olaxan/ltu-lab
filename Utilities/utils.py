@@ -50,14 +50,14 @@ def ask(text, prompt = "> ", error = "\nPlease answer y/n.", exitChar = None):
 		else:
 			print(error)
 
-def query(sep = " ", prompt = "> ", error = "\n???", exitChar = None):
+def query(sep = None, prompt = "> ", error = "\n???", exitChar = None):
 	if (exitChar != None):
 		print("Enter", exitChar, "to exit.")
 	while True:
 		user = input(prompt)
 		if user == exitChar:
 			return None
-		return user.split(sep)
+		return user.split(None)
 
 def toCleanList(obj):
 	if type(obj) is not list : obj = [obj]

@@ -2,15 +2,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>deefeccc-0f37-4bf2-8b98-a03e8a9e488d</ProjectGuid>
+    <ProjectGuid>37c851b6-0e18-49cd-b331-4c1c0bf759f1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Labb4.py</StartupFile>
+    <StartupFile>ComParse.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>Labb4</Name>
-    <RootNamespace>Labb4</RootNamespace>
+    <Name>ComParse</Name>
+    <RootNamespace>ComParse</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,23 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Labb4.py" />
-    <Compile Include="pbshell.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="phonebook.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="user.py">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.pyproj">
-      <Name>Utilities</Name>
-      <Project>{2fd752f5-0c6e-496e-8025-be5a96672790}</Project>
-      <Private>True</Private>
-    </ProjectReference>
+    <Compile Include="ComParse.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -11,12 +11,13 @@ class PhoneBook:
 
 	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
-		test = self.findUsers(name, number)
-		if test[0]: return test[1]
+		if number is not None:
+			test = self.findUsers(name, number)
+			if test[0]: return (not test[0], test[1])
 
-		new = User(name, number)
+		new = User(len(self.users), name, number)
 		self.users.append(new)
-		return new
+		return True, new
 
 	def removeUser(self, name, number = None):
 		"""Removes users matching specified name (+ alias) and numbers."""
@@ -37,15 +38,21 @@ class PhoneBook:
 
 		return len(matches) > 0, matches
 
+	def getUserFromID(self, id):
+		if len(self.users) >= id:
+			return self.users[id]
+		else:
+			return None
+
 	def printAll(self):
 		"""Prints the contents of the phonebook in a formatted manner."""
 		print(len(self.users), "user(s):")
 		for user in self.users:
-			print("{0}, {1} {2}".format(user.lastName.upper(), user.firstName, user.middleName))
+			print("#{0}: {1}, {2} {3}".format(user.id, user.lastName.upper(), user.firstName, user.middleName))
 			if len(user.names) > 1:
 				print("AKA:", ", ".join(user.names[1:]))
 			for num in user.numbers:
-				print("\t# {0}".format(num))
+				print("   - {0}".format(num))
 			print()
 
 	def clear(self):
