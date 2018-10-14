@@ -7,7 +7,6 @@ class PhoneBook:
 
 	def __init__(self, *args, **kwargs):
 		self.users = list()
-		return super().__init__(*args, **kwargs)
 
 	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
@@ -19,37 +18,40 @@ class PhoneBook:
 		self.users.append(new)
 		return True, new
 
-	def removeUser(self, name, number = None):
+	def removeUser(self, name = None, number = None, id = None):
 		"""Removes users matching specified name (+ alias) and numbers."""
 		l = len(self.users)
-		self.users = [user for user in self.users if user not in self.findUsers(name, number)]
+		r = self.findUsers(name, number, id)[1]
+		self.users = [user for user in self.users if user not in r]
 		return l != len(self.users)
 
-	def findUsers(self, name, number = None):
-		"""Finds users matching specified name (+ alias) and numbers."""
+	def findUsers(self, name = None, number = None, id = None):
+		"""Finds users matching specified name (+ alias) and numbers, alternatively using UID."""
 		name = utils.toCleanList(name)
 		number = utils.toCleanList(number)
+		id = utils.toCleanList(id)
 		matches = list()
 
-		for i in name:
-			matches = [user for user in self.users if user.namesToString().lower().find(i.lower()) > -1]
-			for j in number:
-				matches = [user for user in matches if user.numbersToString().find(j) > -1]
+		if id is None:
+			for i in name:
+				matches = [user for user in self.users if user.namesToString().lower().find(i.lower()) > -1] #does this even work?
+				for j in number:
+					matches = [user for user in matches if user.numbersToString().find(j) > -1]
+		else:
+			matches = [user for user in self.users if user.id == id]
 
 		return len(matches) > 0, matches
 
-	def getUserFromID(self, id):
-		if len(self.users) >= id:
-			return self.users[id]
-		else:
-			return None
+	def findSingleUser(self, name = None, number = None, id = None):
+		user = self.findUsers(name, number, id)
+		return user[0], user[1][0]
 
 	def printUser(self, user):
 		print("#{0}: {1}, {2} {3}".format(user.id, user.lastName.upper(), user.firstName, user.middleName))
 		if len(user.names) > 1:
 			print("AKA:", ", ".join(user.names[1:]))
 		for num in user.numbers:
-			print("   - {0}".format(num))
+			print("  - {0}".format(num))
 		print()
 
 	def printAll(self):

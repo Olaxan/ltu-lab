@@ -1,4 +1,6 @@
 import cmd
+import utils
+import kwtok
 import phonebook as pb
 
 class PhonebookShell(cmd.Cmd):
@@ -11,37 +13,28 @@ class PhonebookShell(cmd.Cmd):
 	prompt = "POST> "
 
 	def do_tokenize(self, arg):
-		print(arg)
-		print(self.get_tokens(arg, "get", "set"))
+		tok = kwtok.KeywordTokenizer(arg, "get", "set")
+		print(tok.rest, tok.tokens)
 
 	def do_add(self, arg):
+
 		args = arg.split()
-		iNum, iAlias = len(args), len(args)
-		num, alias = None, None
-		
+		if len(args) > 0:
 
-		if len(args) > 1:
-
-			if "number" in args:
-				iNum = args.index("number")
-			if "alias" in args:
-				iAlias = args.index("alias")
-
-			if iAlias < len(args):
-				alias = " ".join(args[iAlias + 1:min(iNum + (iAlias > iNum) * 1000, len(args))])
-				#fix the stupid shit
-			if iNum < len(args):
-				num = args[iNum + 1:min(iAlias + (iNum > iAlias) * 1000, len(args))]
+			tokenizer = kwtok.KeywordTokenizer(arg, "alias", "number")
+			name = " ".join(tokenizer.rest)
+			alias = " ".join(tokenizer.alias)
+			number = tokenizer.number
 
 			if str.isdigit(args[0]):
-				name = " ".join(args[1:min(iNum, iAlias)])
-				user = self.book.getUserFromID(int(args[0]))
-				user.addAlias([alias, name])
-				user.addNumber(num)
-				print("Added to {}.".format(user.firstName.upper()))
+				user = self.book.findSingleUser(id=int(args[0]))
+				if user[0]:
+					name = " ".join(tokenizer.rest[1:])
+					user[1].addAlias([alias, name])
+					user[1].addNumber(number)
+					print("Added to {}.".format(user[1].firstName.upper()))
 			else:
-				name = " ".join(args[:min(iNum, iAlias)])
-				user = self.book.addUser([name, alias], num)[1]
+				user = self.book.addUser([name, alias], number)[1]
 				print("Added {}.".format(user.firstName.upper()))
 
 	def help_add(self):
@@ -49,7 +42,25 @@ class PhonebookShell(cmd.Cmd):
 		print("SYNTAX: add <Name>/<ID> number <Number> alias <Alias>")
 
 	def do_remove(self, arg):
-		pass
+		
+		tokenizer = kwtok.KeywordTokenizer(arg, "number")
+		name = " ".join(tokenizer.rest)
+		number = tokenizer.number
+
+		if str.isdigit(tokenizer.user[0]):
+			success = self.book.removeUser(id=int(tokenizer.user[0]))
+		else:
+			if len(self.book.findUsers(name, number)[1]) > 1:
+				print("ERROR: Ambiguity - clarify or specify UID.")
+				self.do_lookup(arg)
+				success = False
+			else:
+				success = self.book.removeUser(name, number)
+
+		if success:
+			print("User {} removed.".format(name))
+		else:
+			print("Failed to remove user(s).")
 
 	def help_remove(self):
 		print("REMOVE: Removes a user, or if used with additional arguments: data from a user")

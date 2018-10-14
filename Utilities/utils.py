@@ -62,27 +62,3 @@ def query(sep = None, prompt = "> ", error = "\n???", exitChar = None):
 def toCleanList(obj):
 	if type(obj) is not list : obj = [obj]
 	return list(filter(None, obj))
-
-def getTokenList(self, input, *keywords):
-	"""Converts a user fed string containing keywords into a list of tuples containing the keywords and arguments:
-
-	input = get ONE TWO set THREE FOUR
-	keywords = ("get", "set")
-	result = [ ("get", ["ONE", "TWO"]), ("set", ["THREE", "FOUR"]) ]"""
-
-	out = []
-	inputs = input.split()
-
-	for key in keywords:
-		if key in inputs:
-			words = []
-			pos = inputs.index(key)
-			while True:
-				pos += 1
-
-				if pos >= len(inputs) or inputs[pos] in keywords:
-					out.append((key, words))
-					break
-				else:
-					words.append(inputs[pos])
-	return out
