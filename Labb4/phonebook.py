@@ -11,8 +11,8 @@ class PhoneBook:
 	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
 		if number is not None:
-			test = self.findUsers(name, number)
-			if test[0]: return (not test[0], test[1])
+			test = self.findUsers(number=number)
+			if test[0]: return (False, test[1])
 
 		new = User(len(self.users), name, number)
 		self.users.append(new)
@@ -25,26 +25,34 @@ class PhoneBook:
 		self.users = [user for user in self.users if user not in r]
 		return l != len(self.users)
 
-	def findUsers(self, name = None, number = None, id = None):
-		"""Finds users matching specified name (+ alias) and numbers, alternatively using UID."""
-		name = utils.toCleanList(name)
-		number = utils.toCleanList(number)
-		id = utils.toCleanList(id)
-		matches = list()
+	def findUsers(self, name = "", number = "", id = ""):
+		"""Finds users matching specified name (+ alias) and numbers, alternatively using UID.
+		This function is just the worst."""
+		names = utils.toCleanList(name)
+		numbers = utils.toCleanList(number)
+		ids = utils.toCleanList(id)
 
-		if id is None:
-			for i in name:
-				matches = [user for user in self.users if user.namesToString().lower().find(i.lower()) > -1] #does this even work?
-				for j in number:
-					matches = [user for user in matches if user.numbersToString().find(j) > -1]
-		else:
-			matches = [user for user in self.users if user.id == id]
+		m_id = self.users
+		m_name = self.users
+		m_num = self.users
+
+		for id in ids:
+			m_id = [user for user in self.users if str(user.id) == str(id)]
+		for name in names:
+			m_name = [user for user in self.users if user.namesToString().lower().find(name.lower()) > -1]
+		for number in numbers:
+			m_num = [user for user in self.users if user.numbersToString().find(number) > -1]
+
+		matches = list(set(m_id).intersection(set(m_name).intersection(set(m_num))))
 
 		return len(matches) > 0, matches
 
 	def findSingleUser(self, name = None, number = None, id = None):
 		user = self.findUsers(name, number, id)
-		return user[0], user[1][0]
+		if user[0]:
+			return user[0], user[1][0]
+		else:
+			return False, None
 
 	def printUser(self, user):
 		print("#{0}: {1}, {2} {3}".format(user.id, user.lastName.upper(), user.firstName, user.middleName))

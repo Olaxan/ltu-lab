@@ -62,3 +62,8 @@ def query(sep = None, prompt = "> ", error = "\n???", exitChar = None):
 def toCleanList(obj):
 	if type(obj) is not list : obj = [obj]
 	return list(filter(None, obj))
+
+def hasCommonMember(a, b): 
+    a2 = set(a) 
+    b2 = set(b) 
+    return len(a2.intersection(b2)) > 0

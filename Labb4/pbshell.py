@@ -18,24 +18,21 @@ class PhonebookShell(cmd.Cmd):
 
 	def do_add(self, arg):
 
-		args = arg.split()
-		if len(args) > 0:
+		tokenizer = kwtok.KeywordTokenizer(arg, "alias", "number")
+		name = " ".join(tokenizer.rest)
+		alias = " ".join(tokenizer.alias)
+		number = tokenizer.number
 
-			tokenizer = kwtok.KeywordTokenizer(arg, "alias", "number")
-			name = " ".join(tokenizer.rest)
-			alias = " ".join(tokenizer.alias)
-			number = tokenizer.number
-
-			if str.isdigit(args[0]):
-				user = self.book.findSingleUser(id=int(args[0]))
-				if user[0]:
-					name = " ".join(tokenizer.rest[1:])
-					user[1].addAlias([alias, name])
-					user[1].addNumber(number)
-					print("Added to {}.".format(user[1].firstName.upper()))
-			else:
-				user = self.book.addUser([name, alias], number)[1]
-				print("Added {}.".format(user.firstName.upper()))
+		if str.isdigit(tokenizer.user[0]):
+			user = self.book.findSingleUser(id=int(tokenizer.user[0]))
+			if user[0]:
+				name = " ".join(tokenizer.rest[1:])
+				user[1].addAlias([alias, name])
+				user[1].addNumber(number)
+				print("Added to {}.".format(user[1].firstName.upper()))
+		else:
+			user = self.book.addUser([name, alias], number)[1]
+			print("Added {}.".format(user.firstName.upper()))
 
 	def help_add(self):
 		print("ADD: Adds a user to the phonebook. If used with an ID, appends to an existing user.")
@@ -67,12 +64,14 @@ class PhonebookShell(cmd.Cmd):
 		print("SYNTAX: remove <Name>/<ID> [number <Number>] [name <Name>]")
 
 	def do_lookup(self, arg):
-		for user in self.book.findUsers(arg)[1]:
+		tokenizer = kwtok.KeywordTokenizer(arg, "number", "id")
+
+		for user in self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)[1]:
 			self.book.printUser(user)
 
 	def help_lookup(self):
 		print("LOOKUP: Finds users in the phonebook.")
-		print("SYNTAX: lookup <Name> [number <Number>]")
+		print("SYNTAX: lookup <Name> [<Number>] [<ID>]")
 
 	def do_change(self, arg):
 		args = arg.split()
