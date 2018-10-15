@@ -12,10 +12,6 @@ class PhonebookShell(cmd.Cmd):
 	intro = "TelePOST Catalogue System v0.01 ALPHA.\nType help or ? to list commands.\n"
 	prompt = "POST> "
 
-	def do_tokenize(self, arg):
-		tok = kwtok.KeywordTokenizer(arg, "get", "set")
-		print(tok.rest, tok.tokens)
-
 	def do_add(self, arg):
 
 		tokenizer = kwtok.KeywordTokenizer(arg, "alias", "number")
@@ -33,10 +29,6 @@ class PhonebookShell(cmd.Cmd):
 		else:
 			user = self.book.addUser([name, alias], number)[1]
 			print("Added {}.".format(user.firstName.upper()))
-
-	def help_add(self):
-		print("ADD: Adds a user to the phonebook. If used with an ID, appends to an existing user.")
-		print("SYNTAX: add <Name>/<ID> number <Number> alias <Alias>")
 
 	def do_remove(self, arg):
 		
@@ -59,33 +51,17 @@ class PhonebookShell(cmd.Cmd):
 		else:
 			print("Failed to remove user(s).")
 
-	def help_remove(self):
-		print("REMOVE: Removes a user, or if used with additional arguments: data from a user")
-		print("SYNTAX: remove <Name>/<ID> [number <Number>] [name <Name>]")
-
 	def do_lookup(self, arg):
 		tokenizer = kwtok.KeywordTokenizer(arg, "number", "id")
 
 		for user in self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)[1]:
-			self.book.printUser(user)
-
-	def help_lookup(self):
-		print("LOOKUP: Finds users in the phonebook.")
-		print("SYNTAX: lookup <Name> [<Number>] [<ID>]")
+			self.book.printSingleUser(user)
 
 	def do_change(self, arg):
 		args = arg.split()
 
-	def help_change(self):
-		print("CHANGE: Makes changes to a user in the phonebook.")
-		print("SYNTAX: change <Name> [number <Number>] [name <Name>]")
-
 	def do_list(self, arg):
-		self.book.printAll()
-
-	def help_list(self):
-		print("LIST: Lists all users in the phonebook.")
-		print("SYNTAX: list")
+		self.book.printUsers()
 
 	def do_save(self, arg):
 		if self.book.save(arg):
@@ -101,6 +77,26 @@ class PhonebookShell(cmd.Cmd):
 
 	def do_exit(self, arg):
 		return True
+
+	def help_lookup(self):
+		print("LOOKUP: Finds users in the phonebook.")
+		print("SYNTAX: lookup <Name> [<Number>] [<ID>]")
+
+	def help_change(self):
+		print("CHANGE: Makes changes to a user in the phonebook.")
+		print("SYNTAX: change <Name> [number <Number>] [name <Name>]")
+
+	def help_list(self):
+		print("LIST: Lists all users in the phonebook.")
+		print("SYNTAX: list")
+
+	def help_remove(self):
+		print("REMOVE: Removes a user, or if used with additional arguments: data from a user")
+		print("SYNTAX: remove <Name>/<ID> [number <Number>] [name <Name>]")
+
+	def help_add(self):
+		print("ADD: Adds a user to the phonebook. If used with an ID, appends to an existing user.")
+		print("SYNTAX: add <Name>/<ID> number <Number> alias <Alias>")
 
 	def help_exit(self):
 		print("EXIT: Exits the phonebook.")

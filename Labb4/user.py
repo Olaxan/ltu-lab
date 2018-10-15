@@ -2,12 +2,13 @@ import utils
 
 class User:
 
-	def __init__(self, id, name, number = None):
-		self.id = id
+	numUsers = 0
+
+	def __init__(self, name, number = None):
+		self.id = User.numUsers
 		self.names = utils.toCleanList(name)
 		self.numbers = utils.toCleanList(number)
-
-		return super().__init__()
+		User.numUsers += 1
 
 	@property
 	def firstName(self):
