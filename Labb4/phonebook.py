@@ -32,17 +32,38 @@ class PhoneBook:
 		return l != len(self.users)
 
 	def findUsers(self, name = None, number = None, id = None):
-		"""Finds users matching specified name (+ alias) and numbers, alternatively using UID."""
+		"""Finds users matching specified name/alias, number, or UID."""
 
-		matches = [user for user in self.users if 
-			 (id is None or user.id == id) and
-			 (name is None or user.namesToString().lower().find(name.lower())) and 
-			 (number is None or number in user.numbers) 
-			 ]
+		names = utils.toCleanList(name)
+		numbers = utils.toCleanList(number)
+		ids = utils.toCleanList(id)
+
+		matches = []
+
+		for user in self.users:
+			test_name = len(names) == 0
+			test_num = len(numbers) == 0
+			test_id = len(ids) == 0
+
+			for name in names:
+				for userName in user.names:
+					if userName.lower().find(name.lower()) > -1:
+						test_name = True
+			for num in numbers:
+				for userNum in user.numbers:
+					if userNum.find(num) > -1:
+						test_num = True
+			for id in ids:
+				if str(id) == str(user.id):
+					test_id = True
+
+			if test_name and test_num and test_id:
+				matches.append(user)
 
 		return len(matches) > 0, matches
 
 	def findSingleUser(self, name = None, number = None, id = None):
+		"""Finds a single user matching specified name/alias, number, or UID."""
 		user = self.findUsers(name, number, id)
 		if user[0]:
 			return user[0], user[1][0]
@@ -56,6 +77,7 @@ class PhoneBook:
 			self.printSingleUser(user)
 
 	def printSingleUser(self, user):
+		"""Prints details about a single specified user."""
 		print("#{0}: {1}, {2} {3}".format(user.id, user.lastName.upper(), user.firstName, user.middleName))
 		if len(user.names) > 1:
 			print("AKA:", ", ".join(user.names[1:]))
@@ -64,9 +86,11 @@ class PhoneBook:
 		print()
 
 	def clear(self):
+		"""Clears the phonebook."""
 		self.users.clear()
 
 	def save(self, path):
+		"""Saves the phonebook to a file, using a super special proprietary format."""
 		with open(path, "w") as wf:
 			for user in self.users:
 				wf.write("{0};{1}\n".format("/".join(user.names), "/".join(user.numbers)))
@@ -74,6 +98,7 @@ class PhoneBook:
 		return False
 
 	def load(self, path):
+		"""Loads all users from the specified file."""
 		if (os.path.isfile(path)):
 			with open(path, "r") as rf:
 				for line in rf.readlines():
