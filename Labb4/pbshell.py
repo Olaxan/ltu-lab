@@ -18,6 +18,8 @@ class PhonebookShell(cmd.Cmd):
 		return line
 
 	def do_add(self, arg):
+		"""Adds a new user to the phonebook, or appends data to an existing one if  used with ID.
+		All fields are optional. User name needs no prefix in command."""
 
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "alias", "number")
 		name = " ".join(tokenizer.rest)

@@ -17,7 +17,6 @@ class PhoneBook:
 		for num in numbers:
 			test = self.findUsers(number=num)
 			if test[0]:
-				print("Number {} already exists!".format(num))
 				return False, test[1]
 
 		new = User(name, number)
@@ -104,9 +103,10 @@ class PhoneBook:
 				for line in rf.readlines():
 					names = re.search("^(.*?);", line)
 					numbers = re.search(";(.+)$", line)
-					if names and numbers:
-						names = names.group(1).split("/")
+					if numbers:
 						numbers = numbers.group(1).split("/")
+					if names:
+						names = names.group(1).split("/")
 						self.addUser(names, numbers)
 					else:
 						return False
