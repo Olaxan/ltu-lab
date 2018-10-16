@@ -26,6 +26,8 @@ class PhonebookShell(cmd.Cmd):
 				user[1].addAlias([alias, name])
 				user[1].addNumber(number)
 				print("Added to {}.".format(user[1].firstName.upper()))
+			else:
+				print("User not found!")
 		else:
 			user = self.book.addUser([name, alias], number)[1]
 			print("Added {}.".format(user.firstName.upper()))

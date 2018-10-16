@@ -8,7 +8,7 @@ class PhoneBook:
 	def __init__(self, *args, **kwargs):
 		self.users = list()
 
-	def addUser(self, name, number = ""):
+	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
 
 		names = utils.toCleanList(name)
@@ -24,25 +24,25 @@ class PhoneBook:
 		self.users.append(new)
 		return True, new
 
-	def removeUser(self, name = "", number = "", id = ""):
+	def removeUser(self, name = None, number = None, id = None):
 		"""Removes users matching specified name (+ alias) and numbers."""
 		l = len(self.users)
 		r = self.findUsers(name, number, id)[1]
 		self.users = [user for user in self.users if user not in r]
 		return l != len(self.users)
 
-	def findUsers(self, name = "", number = "", id = ""):
+	def findUsers(self, name = None, number = None, id = None):
 		"""Finds users matching specified name (+ alias) and numbers, alternatively using UID."""
 
 		matches = [user for user in self.users if 
-			 (id is "" or user.id == id) and
-			 (name is "" or user.namesToString().lower().find(name.lower())) and 
-			 (number is "" or number in user.numbers) 
+			 (id is None or user.id == id) and
+			 (name is None or user.namesToString().lower().find(name.lower())) and 
+			 (number is None or number in user.numbers) 
 			 ]
 
 		return len(matches) > 0, matches
 
-	def findSingleUser(self, name = "", number = "", id = ""):
+	def findSingleUser(self, name = None, number = None, id = None):
 		user = self.findUsers(name, number, id)
 		if user[0]:
 			return user[0], user[1][0]
