@@ -24,10 +24,13 @@ class PhoneBook:
 		self.users.append(new)
 		return True, new
 
-	def removeUser(self, name = None, number = None, id = None):
+	def removeUser(self, user = None, name = None, number = None, id = None):
 		"""Removes users matching specified name (+ alias) and numbers."""
 		l = len(self.users)
-		r = self.findUsers(name, number, id)[1]
+		if user:
+			r = utils.toCleanList(user)
+		else:
+			r = self.findUsers(name, number, id)[1]
 		self.users = [user for user in self.users if user not in r]
 		return l != len(self.users)
 
@@ -37,6 +40,8 @@ class PhoneBook:
 		names = utils.toCleanList(name)
 		numbers = utils.toCleanList(number)
 		ids = utils.toCleanList(id)
+
+		#print("Name(s): {}, Number(s): {}, ID(s): {}".format(names, numbers, ids))
 
 		matches = []
 

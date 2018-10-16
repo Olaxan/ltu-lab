@@ -1,3 +1,5 @@
+import os
+
 def sign(n):
 	if n == 0:
 		return int(0)
@@ -67,3 +69,9 @@ def hasCommonMember(a, b):
     a2 = set(a) 
     b2 = set(b) 
     return len(a2.intersection(b2)) > 0
+
+def clear(): 
+    if os.name == 'nt': 
+        os.system('cls') 
+    else: 
+        os.system('clear')

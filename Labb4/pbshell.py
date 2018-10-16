@@ -5,24 +5,23 @@ import phonebook as pb
 
 class PhonebookShell(cmd.Cmd):
 
-	def __init__(self, book : type(pb.PhoneBook), completekey = 'tab', stdin = None, stdout = None):
+	def __init__(self, book : type(pb.PhoneBook)):
+		cmd.Cmd.__init__(self)
 		self.book = book
-		return super().__init__(completekey, stdin, stdout)
 
 	intro = "TelePOST Catalogue System v0.01 ALPHA.\nType help or ? to list commands.\n"
 	prompt = "POST> "
 
 	def do_add(self, arg):
 
-		tokenizer = kwtok.KeywordTokenizer(arg, "alias", "number")
+		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "alias", "number")
 		name = " ".join(tokenizer.rest)
 		alias = " ".join(tokenizer.alias)
 		number = tokenizer.number
 
-		if str.isdigit(tokenizer.user[0]):
-			user = self.book.findSingleUser(id=int(tokenizer.user[0]))
+		if tokenizer.id:
+			user = self.book.findSingleUser(id=int(tokenizer.id))
 			if user[0]:
-				name = " ".join(tokenizer.rest[1:])
 				user[1].addAlias([alias, name])
 				user[1].addNumber(number)
 				print("Added to {}.".format(user[1].firstName.upper()))
@@ -34,33 +33,40 @@ class PhonebookShell(cmd.Cmd):
 
 	def do_remove(self, arg):
 		
-		tokenizer = kwtok.KeywordTokenizer(arg, "number")
-		name = " ".join(tokenizer.rest)
-		number = tokenizer.number
+		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
 
-		if str.isdigit(tokenizer.user[0]):
-			success = self.book.removeUser(id=int(tokenizer.user[0]))
-		else:
-			if len(self.book.findUsers(name, number)[1]) > 1:
-				print("ERROR: Ambiguity - clarify or specify UID.")
-				self.do_lookup(arg)
-				success = False
-			else:
-				success = self.book.removeUser(name, number)
+		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
 
-		if success:
-			print("User {} removed.".format(name))
+		if not find[0]:
+			print("User not found!")
+		elif len(find[1]) > 1:
+			print("Multiple users found! Please narrow your search using ID or number.\n")
+			self.do_lookup(arg)
 		else:
-			print("Failed to remove user(s).")
+			firstName = find[1][0].firstName
+			self.book.removeUser(user = find[1][0])
+			print("Removed {}!".format(firstName.upper()))
 
 	def do_lookup(self, arg):
-		tokenizer = kwtok.KeywordTokenizer(arg, "number", "id")
+		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
 
 		for user in self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)[1]:
 			self.book.printSingleUser(user)
 
 	def do_change(self, arg):
-		args = arg.split()
+		
+		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
+
+		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
+
+		if not find[0]:
+			print("User not found!")
+		elif len(find[1]) > 1:
+			print("Multiple users found! Please narrow your search using ID or number.\n")
+			self.do_lookup(arg)
+		else:
+			shell = PhonebookChangeShell(find[1][0])
+			shell.cmdloop()
 
 	def do_list(self, arg):
 		self.book.printUsers()
@@ -103,3 +109,28 @@ class PhonebookShell(cmd.Cmd):
 	def help_exit(self):
 		print("EXIT: Exits the phonebook.")
 		print("SYNTAX: exit")
+
+class PhonebookChangeShell(cmd.Cmd):
+
+	def __init__(self, user):
+		cmd.Cmd.__init__(self)
+		self.user = user
+		PhonebookChangeShell.prompt = "POST({})> ".format(self.user.firstName.upper())
+		utils.clear()
+
+	intro = "TelePOST Catalogue System v0.01 ALPHA.\nType help or ? to list commands.\n"
+
+	def do_add(self, arg):
+		
+		tokenizer = kwtok.KeywordTokenizer(arg, "number", "alias")
+		self.user.addAlias(tokenizer.alias)
+		self.xuser.addNumber(tokenizer.number)
+
+	def do_remove(self, arg):
+		
+		tokenizer = kwtok.KeywordTokenizer(arg, "number", "alias")
+		#user.removeAlias(tokenizer.alias)
+		#user.removeNumber(tokenizer.number)
+
+	def do_exit(self, arg):
+		return True
