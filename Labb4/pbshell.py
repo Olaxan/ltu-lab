@@ -3,7 +3,7 @@ import utils
 import kwtok
 import phonebook as pb
 
-class PhonebookShell(cmd.Cmd):
+class PBShell(cmd.Cmd):
 
 	def __init__(self, book : type(pb.PhoneBook)):
 		cmd.Cmd.__init__(self)
@@ -39,7 +39,8 @@ class PhonebookShell(cmd.Cmd):
 			print("Added {}.".format(user.firstName.upper()))
 
 	def do_remove(self, arg):
-		
+		"""Removes a user from the phonebook. Can be filtered using name, ID, and number."""
+
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
 
 		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
@@ -55,13 +56,18 @@ class PhonebookShell(cmd.Cmd):
 			print("Removed {}!".format(firstName.upper()))
 
 	def do_lookup(self, arg):
+		"""Finds matching users in the phonebook, and prints their information.
+		Filtered using name, number, and ID."""
+
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
 
 		for user in self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)[1]:
 			self.book.printSingleUser(user)
 
 	def do_change(self, arg):
-		
+		"""Enters 'change mode' for the specified user.
+		Filtered with name, ID, and number."""
+
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
 
 		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
@@ -72,7 +78,7 @@ class PhonebookShell(cmd.Cmd):
 			print("Multiple users found! Please narrow your search using ID or number.\n")
 			self.do_lookup(arg)
 		else:
-			shell = PhonebookChangeShell(self.book, find[1][0])
+			shell = PBShellChange(self.book, find[1][0])
 			shell.cmdloop()
 
 	def do_list(self, arg):
@@ -80,21 +86,26 @@ class PhonebookShell(cmd.Cmd):
 		self.book.printUsers()
 
 	def do_clear(self, arg):
+		"""Clears the screen, OS safe."""
 		utils.clear()
 
 	def do_save(self, arg):
+		"""Saves the phonebook to disk, to the specified path."""
 		if self.book.save(arg):
 			print("Saved to file {}.".format(arg))
 		else:
 			print("Failed to save!")
 
 	def do_load(self, arg):
+		"""Loads a phonebook from disk, using the specified path."""
 		if self.book.load(arg):
 			print("Loaded from file {}.".format(arg))
 		else:
 			print("Failed to load!")
 
 	def do_exit(self, arg):
+		"""Exists the shell
+		TODO: Ask for save confirmation."""
 		return True
 
 	def help_lookup(self):
@@ -130,13 +141,13 @@ class PhonebookShell(cmd.Cmd):
 	def help_clear(self):
 		print("Clears the screen.")
 
-class PhonebookChangeShell(cmd.Cmd):
+class PBShellChange(cmd.Cmd):
 
 	def __init__(self, book, user):
 		cmd.Cmd.__init__(self)
 		self.book = book
 		self.user = user
-		PhonebookChangeShell.prompt = "POST({})> ".format(self.user.firstName.upper())
+		PBShellChange.prompt = "POST({})> ".format(self.user.firstName.upper())
 		utils.clear()
 
 	intro = "TelePOST Catalogue System v0.01 ALPHA.\nType help or ? to list commands.\n"
@@ -147,28 +158,33 @@ class PhonebookChangeShell(cmd.Cmd):
 		return line
 
 	def do_add(self, arg):
-		
+		"""Adds data to the user, number or alias."""
+
 		tokenizer = kwtok.KeywordTokenizer(arg, "number", "alias")
 		self.user.addAlias(" ".join(tokenizer.alias))
 		self.user.addNumber(tokenizer.number)
 		self.user.toString()
 
 	def do_remove(self, arg):
-		
+		"""Removes data from the user, number or alias."""
+
 		tokenizer = kwtok.KeywordTokenizer(arg, "number", "alias")
 		self.user.removeAlias(tokenizer.alias)
 		self.user.removeNumber(tokenizer.number)
 		self.user.toString()
 
 	def do_show(self, arg):
+		"""Shows user info."""
 		self.user.toString()
 
 	def do_delete(self, arg):
+		"""Deletes the user, upon confirmation from the user."""
 		if utils.ask("Are you sure you want to delete {}?".format(self.user.firstName)):
 			self.book.removeUser(user = self.user)
 			return True
 
 	def do_exit(self, arg):
+		"""Exits the shell."""
 		return True
 
 	def help_add(self):

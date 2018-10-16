@@ -6,7 +6,7 @@ import pbshell as sh
 DEFAULT_PATH = "users.dat"
 
 book = pb.PhoneBook()
-shell = sh.PhonebookShell(book)
+shell = sh.PBShell(book)
 
 if __name__ == '__main__':
 	book.load(DEFAULT_PATH)
