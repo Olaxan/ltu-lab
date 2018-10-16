@@ -150,7 +150,9 @@ class PBShellChange(cmd.Cmd):
 		PBShellChange.prompt = "POST({})> ".format(self.user.firstName.upper())
 		utils.clear()
 
-	intro = "TelePOST Catalogue System v0.01 ALPHA.\nType help or ? to list commands.\n"
+	def preloop(self):
+		print("Editing user:\n")
+		self.user.toString()
 
 	def precmd(self, line):
 		if line != "help":
@@ -172,6 +174,9 @@ class PBShellChange(cmd.Cmd):
 		self.user.removeAlias(tokenizer.alias)
 		self.user.removeNumber(tokenizer.number)
 		self.user.toString()
+
+	def do_name(self, arg):
+		self.user.names[0] = arg
 
 	def do_show(self, arg):
 		"""Shows user info."""

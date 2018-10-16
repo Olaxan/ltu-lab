@@ -22,9 +22,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="d0009e_lab2_bounceTest.py" />
-    <Compile Include="d0009e_lab2_solveTest.py" />
-    <Compile Include="d0009e_lab2_sumTest.py" />
     <Compile Include="lab2.py" />
     <Compile Include="menu.py" />
     <Compile Include="recursion.py" />

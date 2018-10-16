@@ -48,7 +48,7 @@ class User:
 		l = utils.toCleanList(args)
 		t = len(self.names)
 		for arg in l:
-			if arg in self.names:
+			if arg in self.names and arg != self.names[0]:
 				self.names.remove(arg)
 		return t is not len(self.names)
 
