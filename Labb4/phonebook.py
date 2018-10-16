@@ -83,12 +83,7 @@ class PhoneBook:
 
 	def printSingleUser(self, user):
 		"""Prints details about a single specified user."""
-		print("#{0}: {1}, {2} {3}".format(user.id, user.lastName.upper(), user.firstName, user.middleName))
-		if len(user.names) > 1:
-			print("AKA:", ", ".join(user.names[1:]))
-		for num in user.numbers:
-			print("  - {0}".format(num))
-		print()
+		user.toString()
 
 	def clear(self):
 		"""Clears the phonebook."""
@@ -107,8 +102,13 @@ class PhoneBook:
 		if (os.path.isfile(path)):
 			with open(path, "r") as rf:
 				for line in rf.readlines():
-					names = re.search("^(.*?);", line).group(1).split("/")
-					numbers = re.search(";(.+)$", line).group(1).split("/")
-					self.addUser(names, numbers)
+					names = re.search("^(.*?);", line)
+					numbers = re.search(";(.+)$", line)
+					if names and numbers:
+						names = names.group(1).split("/")
+						numbers = numbers.group(1).split("/")
+						self.addUser(names, numbers)
+					else:
+						return False
 				return True
 		return False
