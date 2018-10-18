@@ -165,8 +165,7 @@ class PBShell(cmd.Cmd):
 			print("Failed to load!")
 
 	def do_exit(self, arg):
-		"""Exists the shell
-		TODO: Ask for save confirmation."""
+		"""Exists the shell."""
 		if self.book.hash() != self.book.saveHash and utils.ask("Do you want to save your changes?"):
 			if self.book.saveLoc:
 				self.book.save(self.book.saveLoc)
