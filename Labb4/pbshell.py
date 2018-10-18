@@ -9,13 +9,18 @@ class PBShell(cmd.Cmd):
 		cmd.Cmd.__init__(self)
 		self.book = book
 
-	intro = "TelePOST Catalogue System v0.01 ALPHA.\nType help or ? to list commands.\n"
+	intro = "TelePOST Catalogue System v1.\nType help or ? to list commands.\n"
 	prompt = "POST> "
 
 	def precmd(self, line):
 		if line != "help":
 			print()
 		return line
+
+	def postcmd(self, stop, line):
+		if line not in ("clear", "help"):
+			print()
+		return stop
 
 	def do_add(self, arg):
 		"""Adds a new user to the phonebook, or appends data to an existing one if  used with ID.
@@ -34,15 +39,16 @@ class PBShell(cmd.Cmd):
 				print("Added to {}.".format(user[1].firstName.upper()))
 			else:
 				print("User not found!")
-		else:
+		elif name:
 			user = self.book.addUser([name, alias], number)[1]
 			print("Added {}.".format(user.firstName.upper()))
+		else:
+			print("Can't add user without name or ID!")
 
 	def do_remove(self, arg):
 		"""Removes a user from the phonebook. Can be filtered using name, ID, and number."""
 
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
-
 		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
 
 		if not find[0]:
@@ -80,6 +86,46 @@ class PBShell(cmd.Cmd):
 		else:
 			shell = PBShellChange(self.book, find[1][0])
 			shell.cmdloop()
+
+	def do_alias(self, arg):
+
+		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number", "add", "remove")
+		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
+
+		if not find[0]:
+			print("User not found!")
+		elif len(find[1]) > 1:
+			print("Multiple users found! Please narrow your search using ID or number.\n")
+			self.do_lookup(arg)
+		else:
+			add = " ".join(tokenizer.add)
+			remove = " ".join(tokenizer.remove)
+			if tokenizer.add and find[1][0].addAlias(add):
+				print("Alias {0} added successfully.".format(add.upper()))
+			if tokenizer.remove:
+				if find[1][0].removeAlias(remove):
+					print("Alias {0} removed successfully.".format(remove.upper()))
+				else:
+					print("Alias {0} not found in user {1}.".format(remove.upper(), find[1][0].firstName.upper()))
+
+	def do_number(self, arg):
+
+		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number", "add", "remove")
+		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
+
+		if not find[0]:
+			print("User not found!")
+		elif len(find[1]) > 1:
+			print("Multiple users found! Please narrow your search using ID or number.\n")
+			self.do_lookup(arg)
+		else:
+			if tokenizer.add and find[1][0].addNumber(tokenizer.add):
+				print("Number(s) {0} added successfully.".format(", ".join(tokenizer.add)))
+			if tokenizer.remove:
+				if find[1][0].removeNumber(tokenizer.remove):
+					print("Number(s) {0} removed successfully.".format(", ".join(tokenizer.remove)))
+				else:
+					print("Number(s) {0} not found in user {1}.".format(", ".join(tokenizer.remove), find[1][0].firstName.upper()))
 
 	def do_list(self, arg):
 		"""Lists all users in the phonebook."""
@@ -123,6 +169,14 @@ class PBShell(cmd.Cmd):
 	def help_add(self):
 		print("Adds a user to the phonebook. If used with an ID, appends to an existing user.")
 		print("SYNTAX: add [<Name>] [number <Number>] [alias <Alias>] [id <ID>]")
+
+	def help_alias(self):
+		print("Adds or removes aliases to a phonebook user.")
+		print("SYNTAX: alias [<Name>] [number <Number>] [id <ID>] [add <Alias>] [remove <Alias>]")
+
+	def help_number(self):
+		print("Adds or removes numbers to a phonebook user.")
+		print("SYNTAX: number [<Name>] [number <Number>] [id <ID>] [add <Number>] [remove <Number>]")
 
 	def help_save(self):
 		print("Saves the phonebook to the disk.")

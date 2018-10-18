@@ -25,14 +25,18 @@ class User:
 	def addNumber(self, args):
 		"""Adds one or several numbers to the user."""
 		l = utils.toCleanList(args)
+		t = len(self.numbers)
 		for arg in l:
 			self.numbers.append(arg)
+		return t != len(self.numbers)
 
 	def addAlias(self, args):
 		"""Adds one or several names to the user."""
 		l = utils.toCleanList(args)
+		t = len(self.names)
 		for arg in l:
 			self.names.append(arg)
+		return t != len(self.names)
 
 	def removeNumber(self, args):
 		"""Removes one or several numbers from the user."""
@@ -41,7 +45,7 @@ class User:
 		for arg in l:
 			if arg in self.numbers:
 				self.numbers.remove(arg)
-		return t is not len(self.numbers)
+		return t != len(self.numbers)
 
 	def removeAlias(self, args):
 		"""Removes one or several names from the user."""
@@ -50,7 +54,7 @@ class User:
 		for arg in l:
 			if arg in self.names and arg != self.names[0]:
 				self.names.remove(arg)
-		return t is not len(self.names)
+		return t != len(self.names)
 
 	def namesToString(self):
 		"""Returns a string of comma-separated names and aliases for the user."""
