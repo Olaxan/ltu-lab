@@ -66,14 +66,17 @@ class PBShell(cmd.Cmd):
 			self.book.removeUser(user = find[1][0])
 			print("Removed {}!".format(firstName.upper()))
 
-	def do_lookup(self, arg):
+	def do_find(self, arg):
 		"""Finds matching users in the phonebook, and prints their information.
 		Filtered using name, number, and ID."""
 
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number")
-
-		for user in self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)[1]:
-			self.book.printSingleUser(user)
+		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
+		if find[0]:
+			for user in find[1]:
+				self.book.printSingleUser(user)
+		else:
+			print("No matches!")
 
 	def do_change(self, arg):
 		"""Enters 'change mode' for the specified user.
@@ -145,25 +148,27 @@ class PBShell(cmd.Cmd):
 	def do_save(self, arg):
 		"""Saves the phonebook to disk, to the specified path."""
 		if self.book.save(arg):
-			print("Saved to file {}.".format(arg))
+			print("Saved to file {0}.".format(arg))
 		else:
 			print("Failed to save!")
 
 	def do_load(self, arg):
 		"""Loads a phonebook from disk, using the specified path."""
 		if self.book.load(arg):
-			print("Loaded from file {}.".format(arg))
+			print("Loaded from file {0}.".format(arg))
 		else:
 			print("Failed to load!")
 
 	def do_exit(self, arg):
 		"""Exists the shell
 		TODO: Ask for save confirmation."""
+		if utils.ask("Do you want to save your changes?"):
+			self.book.save(input("Filename: "))
 		return True
 
-	def help_lookup(self):
+	def help_find(self):
 		print("Finds users in the phonebook.")
-		print("SYNTAX: lookup [<Name>] [number <Number>] [alias <Alias>] [id <ID>]")
+		print("SYNTAX: find [<Name>] [number <Number>] [alias <Alias>] [id <ID>]")
 
 	def help_change(self):
 		print("Makes changes to a user in the phonebook.")

@@ -5,12 +5,15 @@ from user import *
 
 class PhoneBook:
 
-	def __init__(self, *args, **kwargs):
+	def __init__(self, savelocation = None, *args, **kwargs):
+		self.saveLoc = savelocation
 		self.users = list()
+		if self.saveLoc:
+			self.load(self.saveLoc)
 
 	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
-
+		
 		names = utils.toCleanList(name) #Convert input to a list, which helps when doing batch operations.
 		numbers = utils.toCleanList(number)
 
@@ -88,6 +91,7 @@ class PhoneBook:
 
 	def save(self, path):
 		"""Saves the phonebook to a file, using a super special proprietary format."""
+
 		with open(path, "w") as wf:
 			for user in self.users:
 				wf.write("{0};{1}\n".format("/".join(user.names), "/".join(user.numbers)))
