@@ -213,6 +213,11 @@ class PBShellChange(cmd.Cmd):
 			print()
 		return line
 
+	def postcmd(self, stop, line):
+		if line not in ("clear", "help"):
+			print()
+		return stop
+
 	def do_add(self, arg):
 		"""Adds data to the user, number or alias."""
 
@@ -231,6 +236,8 @@ class PBShellChange(cmd.Cmd):
 
 	def do_name(self, arg):
 		self.user.names[0] = arg
+		print("Name change successful!")
+		PBShellChange.prompt = "POST({})> ".format(self.user.firstName.upper())
 
 	def do_show(self, arg):
 		"""Shows user info."""
@@ -253,6 +260,10 @@ class PBShellChange(cmd.Cmd):
 	def help_remove(self):
 		print("Removes values from the user.")
 		print("SYNTAX: remove [number <Number>] [alias <Alias>]")
+
+	def help_name(self):
+		print("Changes the user's primary name.")
+		print("SYNTAX: name <Name>")
 
 	def help_show(self):
 		print("Displays the user in a formatted manner.")
