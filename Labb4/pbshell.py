@@ -38,12 +38,15 @@ class PBShell(cmd.Cmd):
 			if user[0]:
 				user[1].addAlias([alias, name])
 				user[1].addNumber(number)
-				print("Added to {}.".format(user[1].firstName.upper()))
+				print("Added to {0}.".format(user[1].firstName.upper()))
 			else:
 				print("User not found!")
 		elif name:
-			user = self.book.addUser([name, alias], number)[1]
-			print("Added {}.".format(user.firstName.upper()))
+			add = self.book.addUser([name, alias], number)
+			if add[0]:
+				print("Added {0}.".format(add[1].firstName.upper()))
+			else:
+				print("Can't add user with an existing number!")
 		else:
 			print("Can't add user without name or ID!")
 
