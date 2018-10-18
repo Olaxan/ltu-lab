@@ -24,6 +24,9 @@ class PBShell(cmd.Cmd):
 			print()
 		return stop
 
+	def do_hash(self, arg):
+		print(self.book.hash())
+
 	def do_add(self, arg):
 		"""Adds a new user to the phonebook, or appends data to an existing one if  used with ID.
 		All fields are optional. User name needs no prefix in command."""
@@ -147,23 +150,28 @@ class PBShell(cmd.Cmd):
 
 	def do_save(self, arg):
 		"""Saves the phonebook to disk, to the specified path."""
-		if self.book.save(arg):
-			print("Saved to file {0}.".format(arg))
+		save = self.book.save(arg)
+		if save[0]:
+			print("Saved to file {0}.".format(save[1]))
 		else:
 			print("Failed to save!")
 
 	def do_load(self, arg):
 		"""Loads a phonebook from disk, using the specified path."""
-		if self.book.load(arg):
-			print("Loaded from file {0}.".format(arg))
+		load = self.book.load(arg)
+		if load[0]:
+			print("Loaded from file {0}.".format(load[1]))
 		else:
 			print("Failed to load!")
 
 	def do_exit(self, arg):
 		"""Exists the shell
 		TODO: Ask for save confirmation."""
-		if utils.ask("Do you want to save your changes?"):
-			self.book.save(input("Filename: "))
+		if self.book.hash() != self.book.saveHash and utils.ask("Do you want to save your changes?"):
+			if self.book.saveLoc:
+				self.book.save(self.book.saveLoc)
+			else:
+				self.book.save(input("Filename: "))
 		return True
 
 	def help_find(self):

@@ -8,8 +8,8 @@ class PhoneBook:
 	def __init__(self, savelocation = None, *args, **kwargs):
 		self.saveLoc = savelocation
 		self.users = list()
-		if self.saveLoc:
-			self.load(self.saveLoc)
+		if self.saveLoc and self.load(self.saveLoc):
+			self.saveHash = self.hash()
 
 	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
@@ -89,17 +89,30 @@ class PhoneBook:
 		"""Clears the phonebook."""
 		self.users.clear()
 
+	def hash(self):
+		h = 0
+		for user in self.users:
+			h += len(user.numbers) + len(user.names)
+		return hash(h)
+
 	def save(self, path):
 		"""Saves the phonebook to a file, using a super special proprietary format."""
+		if not path:
+			path = self.saveLoc
 
 		with open(path, "w") as wf:
 			for user in self.users:
 				wf.write("{0};{1}\n".format("/".join(user.names), "/".join(user.numbers)))
-			return True
-		return False
+			self.saveHash = self.hash()
+			self.saveLoc = path
+			return True, path
+		return False, path
 
 	def load(self, path):
 		"""Loads all users from the specified file."""
+		if not path:
+			path = self.saveLoc
+
 		if os.path.isfile(path):
 			with open(path, "r") as rf:
 				for line in rf.readlines():
@@ -111,6 +124,6 @@ class PhoneBook:
 						names = names.group(1).split("/")
 						self.addUser(names, numbers)
 					else:
-						return False
-				return True
-		return False
+						return False, path
+				return True, path
+		return False, path
