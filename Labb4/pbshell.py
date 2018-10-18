@@ -9,16 +9,18 @@ class PBShell(cmd.Cmd):
 		cmd.Cmd.__init__(self)
 		self.book = book
 
-	intro = "TelePOST Catalogue System v1.\nType help or ? to list commands.\n"
+	intro = "TelePOST Catalogue System v0.5\nType help or ? to list commands.\n"
 	prompt = "POST> "
 
 	def precmd(self, line):
-		if line != "help":
+		"""Just for formatting - these commands will not print a newline before running."""
+		if line and line.split()[0] not in ("help", "?"):
 			print()
 		return line
 
 	def postcmd(self, stop, line):
-		if line not in ("clear", "help"):
+		"""Just for formatting - these commands will not print a newline after running."""
+		if line and line.split()[0] not in ("clear", "help", "?", "lookup", "list", "exit"):
 			print()
 		return stop
 
@@ -88,6 +90,7 @@ class PBShell(cmd.Cmd):
 			shell.cmdloop()
 
 	def do_alias(self, arg):
+		"""Directly adds or removes aliases to a user, filtered by name, ID, or number."""
 
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number", "add", "remove")
 		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
@@ -109,6 +112,7 @@ class PBShell(cmd.Cmd):
 					print("Alias {0} not found in user {1}.".format(remove.upper(), find[1][0].firstName.upper()))
 
 	def do_number(self, arg):
+		"""Directly adds or removes numbers to a user, filtered by name, ID, or number."""
 
 		tokenizer = kwtok.KeywordTokenizer(arg, "-id", "number", "add", "remove")
 		find = self.book.findUsers(" ".join(tokenizer.rest), tokenizer.number, tokenizer.id)
@@ -209,12 +213,12 @@ class PBShellChange(cmd.Cmd):
 		self.user.toString()
 
 	def precmd(self, line):
-		if line != "help":
+		if line and line.split()[0] not in ("help", "?"):
 			print()
 		return line
 
 	def postcmd(self, stop, line):
-		if line not in ("clear", "help"):
+		if line and line.split()[0] not in ("clear", "help", "?", "exit", "show", "add", "remove"):
 			print()
 		return stop
 
@@ -235,6 +239,8 @@ class PBShellChange(cmd.Cmd):
 		self.user.toString()
 
 	def do_name(self, arg):
+		"""Changes the user's primary name."""
+
 		self.user.names[0] = arg
 		print("Name change successful!")
 		PBShellChange.prompt = "POST({})> ".format(self.user.firstName.upper())
@@ -245,9 +251,13 @@ class PBShellChange(cmd.Cmd):
 
 	def do_delete(self, arg):
 		"""Deletes the user, upon confirmation from the user."""
-		if utils.ask("Are you sure you want to delete {}?".format(self.user.firstName)):
+
+		if utils.ask("Are you sure you want to delete {0}?".format(self.user.firstName)):
 			self.book.removeUser(user = self.user)
 			return True
+
+	def do_clear(self, arg):
+		utils.clear()
 
 	def do_exit(self, arg):
 		"""Exits the shell."""
@@ -270,6 +280,9 @@ class PBShellChange(cmd.Cmd):
 
 	def help_delete(self):
 		print("Deletes the user completely from the phonebook.")
+
+	def help_clear(self):
+		print("Clears the screen.")
 
 	def help_exit(self):
 		print("Exits the user editing mode.")

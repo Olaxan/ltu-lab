@@ -1,6 +1,8 @@
 class KeywordTokenizer:
 
 	def __init__(self, input, *args, **kwargs):
+		"""Initializes a keyword tokenizer instance. Looks for keywords in the input string, and applies arguments
+		found after the keyword as list attributes. If a keyword is prefixed with a '-', only one argument is applied."""
 		self.rest = []
 		self.user = input.split()
 		for arg in args:
@@ -11,7 +13,7 @@ class KeywordTokenizer:
 		self.__tokenize(input, *args)
 
 	def __tokenize(self, input, *keywords):
-
+		"""Tokenizes the input string into keywords and arguments (which are fed into instance attributes)."""
 		out = []
 		inputs = self.user.copy()
 
@@ -28,11 +30,11 @@ class KeywordTokenizer:
 				pos = inputs.index(key)
 				inputs.pop(pos)
 				while True:
-					if pos >= len(inputs) or inputs[pos] in keywords:
-						setattr(self, key, words)
+					if pos >= len(inputs) or inputs[pos] in keywords: #if we've reached EOL, or a new keyword...
+						setattr(self, key, words) #set the instance attribute and break
 						break
 					else:
-						words.append(inputs[pos])
+						words.append(inputs[pos]) 
 						inputs.pop(pos)
 						if single:
 							setattr(self, key, words[0])

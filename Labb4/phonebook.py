@@ -11,7 +11,7 @@ class PhoneBook:
 	def addUser(self, name, number = None):
 		"""Adds a new user to the phonebook and returns the User object."""
 
-		names = utils.toCleanList(name)
+		names = utils.toCleanList(name) #Convert input to a list, which helps when doing batch operations.
 		numbers = utils.toCleanList(number)
 
 		for num in numbers:
@@ -30,7 +30,7 @@ class PhoneBook:
 			r = utils.toCleanList(user)
 		else:
 			r = self.findUsers(name, number, id)[1]
-		self.users = [user for user in self.users if user not in r]
+		self.users = [user for user in self.users if user not in r] #Strip users list of users present in 'r'.
 		return l != len(self.users)
 
 	def findUsers(self, name = None, number = None, id = None):
@@ -40,12 +40,10 @@ class PhoneBook:
 		numbers = utils.toCleanList(number)
 		ids = utils.toCleanList(id)
 
-		#print("Name(s): {}, Number(s): {}, ID(s): {}".format(names, numbers, ids))
-
 		matches = []
 
 		for user in self.users:
-			test_name = len(names) == 0
+			test_name = len(names) == 0 #If this argument is not supplied, its test passes automatically.
 			test_num = len(numbers) == 0
 			test_id = len(ids) == 0
 
@@ -98,11 +96,11 @@ class PhoneBook:
 
 	def load(self, path):
 		"""Loads all users from the specified file."""
-		if (os.path.isfile(path)):
+		if os.path.isfile(path):
 			with open(path, "r") as rf:
 				for line in rf.readlines():
-					names = re.search("^(.*?);", line)
-					numbers = re.search(";(.+)$", line)
+					names = re.search("^(.*?);", line) #Regex matches all characters before a ;
+					numbers = re.search(";(.+)$", line) #Regex matches all characters after a ;
 					if numbers:
 						numbers = numbers.group(1).split("/")
 					if names:
