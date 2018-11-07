@@ -93,7 +93,7 @@ class PBShell(cmd.Cmd):
 			print("User not found!")
 		elif len(find[1]) > 1:
 			print("Multiple users found! Please narrow your search using ID or number.\n")
-			self.do_lookup(arg)
+			self.do_find(arg)
 		else:
 			shell = PBShellChange(self.book, find[1][0])
 			shell.cmdloop()
@@ -233,7 +233,7 @@ class PBShellChange(cmd.Cmd):
 		return line
 
 	def postcmd(self, stop, line):
-		if line and line.split()[0] not in ("clear", "help", "?", "exit", "show", "add", "remove"):
+		if line and line.split()[0] not in ("clear", "help", "?", "exit", "show", "add", "remove", "name"):
 			print()
 		return stop
 
@@ -257,7 +257,7 @@ class PBShellChange(cmd.Cmd):
 		"""Changes the user's primary name."""
 
 		self.user.names[0] = arg
-		print("Name change successful!")
+		self.user.toString()
 		PBShellChange.prompt = "POST({})> ".format(self.user.firstName.upper())
 
 	def do_show(self, arg):
